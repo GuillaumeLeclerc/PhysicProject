@@ -50,5 +50,11 @@ int main(){
 	cout << "||vectN|| = " << vectN.length() << endl;
 	cout << "||vect2||^2 = " << vect2.lengthSquared() << endl;
 	cout << "||vect2|| = " << vect2 .length() << endl;
+
+	cout << endl << endl << "test pointeurs" << endl << endl;
+
+	Vecteur2D* pt = &vect1;
+	Vecteur2D* pt2 = &vect2;
+	cout << pt + pt2 << endl;
 }
 

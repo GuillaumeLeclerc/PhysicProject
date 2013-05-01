@@ -9,7 +9,7 @@ CXXFLAGS = -std=c++11  # C++11
 final: Vecteur2D.o main.o Montagne.o 
 	g++ -o final.exe Vecteur2D.o main.o
 
-testVect2D: TestVect2D.o Vecteur2D.o
+testVecteur2D: TestVect2D.o Vecteur2D.o
 	g++ -o testVect2D.exe Vecteur2D.o TestVect2D.o 
 
 testMontagne: Vecteur2D.o Montagne.o TestMontagne.o
