@@ -1,7 +1,9 @@
 #include <vector>
-
-#include "Vecteur2D.h";
+#include <memory>
+#include <iostream>
+#include "Vecteur2D.h"
 #include "Montagne.h"
+#include "Potentiel.h"
 
 using namespace std;
 
@@ -20,20 +22,29 @@ private:
 
 	double tauxEchantillonage; 
 
-	void forEachCoords(void (*action)(int , int , int , const unique_ptr<Vecteur2D>&)) const;
+	void forEachCoords(void (*action)(int , int , int , ChampPotentiel* ));
 
-	unique_ptr<Vecteur2D>&& formuleConditionAuBord();
-	unique_ptr<Vecteur2D>&& formuleDifferenceFinies();
+	unique_ptr<Vecteur2D> formuleConditionAuBord(int y , int z);
+	unique_ptr<Vecteur2D> formuleDifferenceFinies(int x , int y , int z);
 
+	double getXTransformed(int)const;
+	double getYTransformed(int)const;
+	double getZTransformed(int)const;
 
 public:
 	ChampPotentiel(int i_nombreX , int i_nombreY , int i_nombreZ , double i_tauxEchantillonage);
 
-	void initialise(double , const Montagne&);
+	void initialise(double , unique_ptr<Montagne>&&);
+	void calculeLaplacien();
 
-	double getXLength() const;
-	double getYLength() const;
-	double getZLength() const;
+	double getLengthX() const;
+	double getLengthY() const;
+	double getLengthZ() const;
 
-	/* data */
+	void affichePotentiels() const;
+	void affichePotentiels(ostream&) const;
+	void afficheLaplaciens() const;
+	void afficheLaplaciens(ostream&) const;
+
 };
+

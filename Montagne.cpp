@@ -17,3 +17,12 @@ double Montagne::altitude(double positionX , double positionY) const{
 	}
 
 }
+
+void Montagne::affiche(int maxX , int maxY){
+	for(int x = 0 ; x < maxX ; x++){
+		for(int y = 0 ; y < maxY ; y++){
+			cout << x << " " << y << " " << altitude(x , y) << endl;
+		}
+		cout << endl;
+	}
+}

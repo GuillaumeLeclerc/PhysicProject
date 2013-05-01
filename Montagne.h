@@ -15,6 +15,7 @@ private:
 public:
 	Montagne(const Vecteur2D& i_position , double hauteur , double i_etalementX , double i_etalementY);
 	double altitude(double positionX , double positionY) const;
+	void affiche(int , int);
 };
 
 #endif // #define PRJ_MONTAGNE_H

@@ -1,38 +1,44 @@
 #include "Potentiel.h"
 
 Potentiel::Potentiel(){
-	value.reset();
+	valeur.reset();
 	laplacien.reset();
 }
 
-void Potentiel::setLaplacien(const Vecteur2D& value){
-	Vecteur2D copy = value;
-	laplacien = new unique_ptr<Vecteur2D>(&copy);
+const Vecteur2D& Potentiel::getLaplacien() const {
+	return *laplacien;
 }
-void Potentiel::setLaplacien(const Vecteur2D* &pt){
-	laplacien = new unique_ptr<Vecteur2D>(&*pt);
+
+const Vecteur2D& Potentiel::getValue() const {
+	return *valeur;
+}
+
+void Potentiel::setLaplacien(const Vecteur2D& value){
+	laplacien = unique_ptr<Vecteur2D>(new Vecteur2D(value));
+}
+void Potentiel::setLaplacien( Vecteur2D* pt){
+	laplacien = unique_ptr<Vecteur2D>(new Vecteur2D(*pt));
 }
 
 void Potentiel::setLaplacien(unique_ptr<Vecteur2D>&& uptr){
-	laplacien = uptr;
+	laplacien = move(uptr);
 }
 
 void Potentiel::setLaplacien(const unique_ptr<Vecteur2D>& pt){
-	laplacien = new unique_ptr<Vecteur2D>(&*pt);
+	laplacien = unique_ptr<Vecteur2D>(new Vecteur2D(*pt));
 }
 
 void Potentiel::setValue(const Vecteur2D& value){
-	Vecteur2D copy = value;
-	value = new unique_ptr<Vecteur2D>(&copy);
+	valeur = unique_ptr<Vecteur2D>(new Vecteur2D(value));
 }
-void Potentiel::setValue(const Vecteur2D* &pt){
-	value = new unique_ptr<Vecteur2D>(&*pt);
+void Potentiel::setValue(Vecteur2D* pt){
+	valeur = unique_ptr<Vecteur2D>(new Vecteur2D(*pt));
 }
 
 void Potentiel::setValue(unique_ptr<Vecteur2D>&& uptr){
-	value = uptr;
+	valeur = move(uptr);
 }
 
 void Potentiel::setValue(const unique_ptr<Vecteur2D>& pt){
-	value = new unique_ptr<Vecteur2D>(&*pt);
+	valeur = unique_ptr<Vecteur2D>(new Vecteur2D(*pt));
 }
