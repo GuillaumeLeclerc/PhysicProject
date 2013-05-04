@@ -1,4 +1,4 @@
-#include "ChampPotentiel.h"
+sub	#include "ChampPotentiel.h"
 
 
 ChampPotentiel::ChampPotentiel(int i_nombreX , int i_nombreY , int i_nombreZ , double i_tauxEchantillonage){
@@ -68,12 +68,12 @@ void ChampPotentiel::calculeLaplacien(){
 }
 
 
-unique_ptr<Vecteur2D> ChampPotentiel::formuleConditionAuBord(int y , int z){
+unique_ptr<Vecteur2D> ChampPotentiel::formuleConditionAuBord(int y , int z)const {
 	double a = ventAuLoin/2.0;
 	return unique_ptr<Vecteur2D>(new Vecteur2D(-a* getZTransformed(z), a * getYTransformed(y) ));
 }
 
-unique_ptr<Vecteur2D> ChampPotentiel::formuleDifferenceFinies(int x , int y , int z ){
+unique_ptr<Vecteur2D> ChampPotentiel::formuleDifferenceFinies(int x , int y , int z )const{
 	Vecteur2D* result= new Vecteur2D();
 	result->operator+=(potentiels[x-1][y][z]->getValue());
 	result->operator+=(potentiels[x][y-1][z]->getValue());
@@ -120,4 +120,54 @@ double ChampPotentiel::getXTransformed(int x)const{
 
 double ChampPotentiel::getZTransformed(int z)const{
 	return tauxEchantillonage * z;
+}
+
+double ChampPotentiel::erreur(){
+	double result;
+	forEachCoords([&result](int x , int y , int z , ChampPotentiel* that){
+		resut += that->potentiels[x][y][z]->getLaplacien().length();
+	});
+	return result;
+}
+
+void ChampPotentiel::iteration(){
+	forEachCoords([](int x , int y , int z , ChampPotentiel* that){
+		if( x> 0  and x < that->nombreX - 1 and x > 0  and y < that->nombreY - 1 and z > 0  and z < that->nombreZ - 1){
+	 		that[x][y][z]->getValue()->operator+(EPSILON * that->formuleDifferenceFinies(x,y,z));
+		}
+		else
+		{
+			that[x][y][z]->setValue(that->formuleConditionAuBord(y,z));
+		}
+	});
+}
+
+void ChampPotentiel::resolution(double erreurAdmise , int maxIteration , bool verbeuse=false){
+	double currentErreur = -1;
+	for(int i = 0 ; i <= maxIteration && (currentErreur < 0 || currentErreur > erreurAdmise); i++){
+		iteration();
+		erreur = erreur(); 
+		if(verbeuse){
+			affichePotentiels():
+			afficheLaplaciens();
+		}
+	}
+}
+
+double[] ChampPotentiel::formuleDifferenceFiniesVitesse(int i , int j , int k) const {
+	double result[] = double[3];
+	result[0] = potentiels[i][j+1][k]->getValue()->getY() - potentiels[i][j-1][k]->getValue()->getY() - potentiels[i][j][k+1]->getValue()->getX() +potentiels[i][j][k-1]->getValue()->getX();
+	result[1] = -potentiels[i-1][j][k]->getValue()->getY() + potentiels[i+1][j][k]->getValue()->getY();
+	result[2] = potentiels[i-1][j][k]->getValue()->getX() - potentiels[i+1][j][k]->getValue()->getX();
+	return result;
+}
+
+double[] ChampPotentiel::vitesse(int x , int y , int z)const {
+	if( x> 0  and x < that->nombreX - 1 and x > 0  and y < that->nombreY - 1 and z > 0  and z < that->nombreZ - 1){
+		return formuleDifferenceFiniesVitesse(x ,y, z);
+	}
+	else{
+		return ventAuLoin;
+	}
+
 }

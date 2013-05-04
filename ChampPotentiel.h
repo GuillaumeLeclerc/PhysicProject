@@ -24,12 +24,15 @@ private:
 
 	void forEachCoords(void (*action)(int , int , int , ChampPotentiel* ));
 
-	unique_ptr<Vecteur2D> formuleConditionAuBord(int y , int z);
-	unique_ptr<Vecteur2D> formuleDifferenceFinies(int x , int y , int z);
+	unique_ptr<Vecteur2D> formuleConditionAuBord(int y , int z)const;
+	unique_ptr<Vecteur2D> formuleDifferenceFinies(int x , int y , int z)const;
+	double[] formuleDifferenceFiniesVitesse(int , int , int ) const;
 
 	double getXTransformed(int)const;
 	double getYTransformed(int)const;
 	double getZTransformed(int)const;
+
+	void iteration();
 
 public:
 	ChampPotentiel(int i_nombreX , int i_nombreY , int i_nombreZ , double i_tauxEchantillonage);
@@ -46,5 +49,8 @@ public:
 	void afficheLaplaciens() const;
 	void afficheLaplaciens(ostream&) const;
 
+	double erreur();
+	void resolution(double , int , bool = false);
+	double[] vitesse(int , int , int) const;
 };
 

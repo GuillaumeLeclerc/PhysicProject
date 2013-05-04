@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cmath>
 
+#EPSILON 0.1
+
 using namespace std;
 
 class Vecteur2D // Objet immutable
